@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-01-27T23:31:32.726Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0" etag="iw9JGNgv0ntDUPc5V-cH" version="23.0.2" type="github">
+<mxfile host="app.diagrams.net" modified="2024-01-27T23:34:05.196Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0" etag="VyH4JX_gZeRu4VwmqrXj" version="23.0.2" type="github">
   <diagram name="Diagrama de Dominio" id="k7yJM_aL9ywVYqb-OdOL">
-    <mxGraphModel dx="3395" dy="1713" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1868" dy="685" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -611,11 +611,6 @@
             <Array as="points">
               <mxPoint x="-520" y="408" />
             </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="pLd1VBL99V37FzW1p19a-219" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="pLd1VBL99V37FzW1p19a-218">
-          <mxGeometry x="0.9159" y="-1" relative="1" as="geometry">
-            <mxPoint x="100" y="327" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="pLd1VBL99V37FzW1p19a-222" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="pLd1VBL99V37FzW1p19a-218">
