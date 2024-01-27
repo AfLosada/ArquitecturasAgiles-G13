@@ -1,0 +1,1 @@
+# En esta carpeta van los diagramas de SportApp
