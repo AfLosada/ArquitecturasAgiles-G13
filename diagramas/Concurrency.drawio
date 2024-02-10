@@ -1,9 +1,33 @@
-<mxfile host="app.diagrams.net" modified="2024-02-10T05:14:15.210Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0" version="23.1.2" etag="JsMXE1hQ511RYKxLoDIi" type="github">
+<mxfile host="app.diagrams.net" modified="2024-02-10T05:35:27.758Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0" etag="8rQ0NjTnQrO65agsLB3g" version="23.1.2" type="github">
   <diagram name="Page-1" id="3fo4hDpq8MDJEKPzps9l">
-    <mxGraphModel>
+    <mxGraphModel dx="952" dy="554" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="6HdUD3fqdedWInNd4ySQ-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=0;" edge="1" parent="1" source="6HdUD3fqdedWInNd4ySQ-2" target="6HdUD3fqdedWInNd4ySQ-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="6HdUD3fqdedWInNd4ySQ-2" value="&amp;lt;&amp;lt;process&amp;gt;&amp;gt;&lt;br&gt;solicitud registrar usuario" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="170" y="410" width="170" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="6HdUD3fqdedWInNd4ySQ-1" value="&amp;lt;&amp;lt;service&amp;gt;&amp;gt;&lt;br&gt;API GateWay" style="html=1;dashed=0;whiteSpace=wrap;verticalAlign=top;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="205" y="460" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="6HdUD3fqdedWInNd4ySQ-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=0;" edge="1" parent="1" source="6HdUD3fqdedWInNd4ySQ-3" target="6HdUD3fqdedWInNd4ySQ-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="6HdUD3fqdedWInNd4ySQ-3" value="&amp;lt;&amp;lt;process group&amp;gt;&amp;gt;&lt;br&gt;confirmar registro es correcto" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="460" y="300" width="170" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="6HdUD3fqdedWInNd4ySQ-4" value="&amp;lt;&amp;lt;service&amp;gt;&amp;gt;&lt;br&gt;Servicio de Consulta de Usuarios" style="html=1;dashed=0;whiteSpace=wrap;verticalAlign=top;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="480" y="350" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="6HdUD3fqdedWInNd4ySQ-6" value="&amp;lt;&amp;lt;process group&amp;gt;&amp;gt;&lt;br&gt;actualizar registro de usuario" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="460" y="480" width="170" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="6HdUD3fqdedWInNd4ySQ-7" value="&amp;lt;&amp;lt;adapter&amp;gt;&amp;gt;&lt;br&gt;Servicio de Registro de Usuarios" style="html=1;dashed=0;whiteSpace=wrap;verticalAlign=top;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="480" y="530" width="130" height="50" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
