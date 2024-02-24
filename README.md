@@ -21,6 +21,9 @@ Listado de componentes (Microservicios).
 | Monitor | Revisa si los microservicios, en este caso el de registro de usuarios, se encuentra vivo | Python/Bash |
 | Base de Datos | Guarda los registros de usuarios y permite consultarlos. | SQLite |
 
+# Arquitectura de despliegue:
+![despliegue](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/b7070546-084a-4667-ad48-3a12b7c1ffed)
+
 
 ## Instalación
 
@@ -51,9 +54,9 @@ docker-compose up -d
 
 Esta rama (main) muestra la comunicación entre servicios de manera asíncrona e implementa el patrón CQRS. Para la comunicación asíncrona se utiliza Redis como plataforma de mensajería.
 
-El ejemplo implementa tres servicios:
+El experimento implementa tres servicios:
 
-#### Ordenes
+#### Servicio de registro de usuarios
 
 Al implemetar el patrón CQRS las operaciones que expone este servicio se implementan en dos partes:   comandos (api_commands.py) y consultas (api_queries.py). En el archivo api_comands se tienen las siguientes operaciones:
 
@@ -71,7 +74,7 @@ En el archivo api_queries se tienen las siguientes operaciones:
 - Listar todas las órdenes: Esta operación se implementa en la función OrderListResource a través del método get.
 - Consultar una orden específica: Esta operación se implementa en la función OrderResource a través del método get.
 
-#### Productos
+#### Servicio de consulta de usuarios
 
 Al implemetar el patrón CQRS las operaciones que expone este servicio se implementan en dos partes:   comandos (api_commands.py) y consultas (api_queries.py). En el archivo api_comands se tienen las siguientes operaciones:
 
@@ -83,7 +86,7 @@ En el archivo api_queries se tienen las siguientes operaciones:
 - Listar todos los productos: Esta operación se implementa en la función ProductListResource a través del método get.
 - Consultar un producto específico: Esta operación se implementa en la función ProductResource a través del método get.
 
-#### Usuarios
+#### Base de datos
 
 Al implemetar el patrón CQRS las operaciones que expone este servicio se implementan en dos partes:   comandos (api_commands.py) y consultas (api_queries.py). En el archivo api_comands se tienen las siguientes operaciones:
 
@@ -99,74 +102,120 @@ En el archivo api_queries se tienen las siguientes operaciones:
 En este ejemplo se utiliza la configuración proxy del servidor Ngnix para implementar el componente API Gateway. Esta configuración permite que todas las solicitudes se hagan al servidor Ngnix y este redireccione al servicio correspondiente de acuerdo a la operación y ruta especificada en el url, por ejemplo http://localhost/api-commands/users:
 
 ```
-location /api-commands/users {
-  proxy_pass http://users-commands:5000;
-  proxy_set_header X-Real-IP  $remote_addr;
-  proxy_set_header X-Forwarded-For $remote_addr;
-  proxy_set_header Host $host;
-}
-location /api-commands/products {
-  proxy_pass http://products-commands:5000;
-  proxy_set_header X-Real-IP  $remote_addr;
-  proxy_set_header X-Forwarded-For $remote_addr;
-  proxy_set_header Host $host;
-}
-location /api-commands/orders {
-  proxy_pass http://orders-commands:5000;
-  proxy_set_header X-Real-IP  $remote_addr;
-  proxy_set_header X-Forwarded-For $remote_addr;
-  proxy_set_header Host $host;
-}
-location /api-queries/users {
-  proxy_pass http://users-queries:5000;
-  proxy_set_header X-Real-IP  $remote_addr;
-  proxy_set_header X-Forwarded-For $remote_addr;
-  proxy_set_header Host $host;
-}
-location /api-queries/products {
-  proxy_pass http://products-queries:5000;
-  proxy_set_header X-Real-IP  $remote_addr;
-  proxy_set_header X-Forwarded-For $remote_addr;
-  proxy_set_header Host $host;
-}
-location /api-queries/orders {
-  proxy_pass http://orders-queries:5000;
-  proxy_set_header X-Real-IP  $remote_addr;
-  proxy_set_header X-Forwarded-For $remote_addr;
-  proxy_set_header Host $host;
+server {
+    listen 8080;
+    location /user-commands/users {
+        proxy_pass http://registro_usuario:5000;
+        proxy_set_header X-Real-IP  $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Host $host;
+    }
+    location /user-queries/users {
+        proxy_pass http://consulta_usuario:5000;
+        proxy_set_header X-Real-IP  $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Host $host;
+    }
+    location /user-db/users {
+        proxy_pass http://db_usuario:5000;
+        proxy_set_header X-Real-IP  $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Host $host;
+    }
 }
 ```
 
-#### Comunicación asíncrona
+#### Comunicación síncrona
 
-En esta rama, cada servicio tene una copia de la estructura de la BD de los demás servicios por lo que se debe actualizar la información en cada BD cuando se hace una actualización en alguno de los servicios. Por lo anterior, cada servicio usa la cola de mensajería para notificar a los demás los cambios realizados en su respectiva BD o para actualizar la BD con los cambios realizados por los otros servicios. A continuación se muestra el esquema descrito anteriormente para el servicio Productos:
+En esta rama, los servicios no tienen una copia de la estructura de la BD de los demás servicios por lo que se debe conectar a la Base de datos general para actualizarla o consultarla. A continuación se muestra el esquema descrito anteriormente para el servicio Productos:
 
-###### Notificar cambios
 
-En el archivo api_commands.py, el cual implementa las operaciones de creación y actualización de productos, se publica en la cola el id del producto creado o modificado para que los demás servicios actualicen su respectiva BD.
+* Registro de usuarios:
+  
+```python
+@app.route('/user-commands/users/register', methods=['POST'])
+def register_user():
+    user_data = request.json
+    correo = user_data["correo"]
+
+    if not re.fullmatch(regex, correo):
+        os.kill(os.getpid(), signal.SIGINT)
+        return jsonify({ "success": True, "message": "Server is shutting down..." })
+    else:
+        response = requests.post(query_service_url, json=user_data)
+
+        if response.status_code == 200 and response.json()["can_register"]:
+            #el correo no existe, registrar en la BD
+            response = requests.post(db_service_url, json=user_data)
+            return jsonify({"message": "Usuario registrado exitosamente"})
+        else:
+            return jsonify({"error": "No se puede registrar el usuario"}), 400
+```
+
+* Consulta de usuarios:
 
 ```python
-#Publicación en la cola en la creación de un producto
-def post(self):
-    ...
-	q.enqueue(send_product, product_schema.dump(new_product) )
-#Publicación en la cola en la creación de un producto
-def put(self):
-    ...
-	q.enqueue(put_product, product_schema.dump(product))
+@app.route('/check_user', methods=['POST'])
+def check_user():
+    data = request.json
+    correo = data.get("correo")
+
+    if correo in coreos_registrados:
+        return jsonify({"can_register": False, "message": "El usuario ya existe"})
+    else:
+        return jsonify({"can_register": True, "message": "El usuario puede ser registrado"})
 ```
 
-El archivo sender.py publica en la cola el id de un nuevo producto. El archivo putter.py publica en la cola el id del producto modificado.
-
-###### Actualizar cambios
-
-Para el ejemplo, la actualización de un producto se realiza por parte del servicio de órdenes, el cual modifica la cantidad en stock del producto. Por lo anterior, el archivo updater.py implementa la actualización del producto cuyo id publica el servicio de órdenes en la cola. En la carpeta ordenes, en el archivo base.py se define la función process_order la cual verifica que el producto sea válido y si es así cambia el estado de la orden y publica en la cola el id del producto incluído en la orden.
+* Base de datos:
 
 ```python
-def process_order(order_id):
-	...
-	q2.enqueue(update_product, {
-		'id': product.id,
-		'quantity': order.quantity
-	})
+# Configuración de la base de datos con SQLAlchemy
+DATABASE_URL = 'sqlite:///database.db'
+engine = create_engine(DATABASE_URL)
+Base = declarative_base(bind=engine)
+
+# Definición del modelo de usuario
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    correo = Column(String)
+    clave = Column(String)
+
+# Crea todas las tablas definidas en el modelo
+Base.metadata.create_all()
+
+# Configuración de la sesión de SQLAlchemy
+Session = sessionmaker(bind=engine)
 ```
+
+# Pruebas
+
+Para la validacion de la hipotesis de la arquitectura de microservicios para el registro de usuarios se implementan pruebas de estres, validando la resistencia del servicio de registro de usuarios, la deteccion de la falla por nuestro monitor y la respuesta ante la falla. 
+
+## Instalacion
+
+## Ejecucion 
+
+
+# Resultados de la arquitectura
+
+![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/c27371b0-246e-4d49-bb8f-bc19b0b16389)
+
+![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/f466a70b-8bd0-42a9-8590-583301733296)
+
+![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/6339595c-0f38-48eb-b365-12f0e33a24eb)
+
+![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/4cc3e7d4-daaf-4b30-8784-6eed08897ac5)
+
+![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/5fb6bd68-4c27-4522-b122-2e96466435dc)
+
+![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/fad552f0-a119-4576-a162-42be557e05ef)
+
+![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/d02541f2-0019-46fe-a228-7e2df579566a)
+
+![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/a732916f-e58f-4abb-b1bc-9bf38843904d)
+
+
+
+
+
