@@ -40,10 +40,14 @@ class UsuariosConcurrentes extends Simulation {
         "correo":"malo",
         "contrasena":"1"
       }
-    """)).asJson)
+    """)).asJson
+    .check(status.is(502))
+    )
   
   setUp(
-    registroUsuarios.inject(rampConcurrentUsers(100).to(1000).during(120)),
-    registroUsuariosMalos.inject(constantUsersPerSec(0.02).during(120))
+    registroUsuarios.inject(
+      constantConcurrentUsers(1000).during(120)
+      ),
+    registroUsuariosMalos.inject(rampUsers(2).during(120))
   ).protocols(httpConf)
 }
