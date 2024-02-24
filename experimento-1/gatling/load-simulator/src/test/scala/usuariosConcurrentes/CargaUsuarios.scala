@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom
  */
 class UsuariosConcurrentes extends Simulation {
   val httpConf = http
-    .baseUrl("http://localhost:5000") // Set your target base URL
+    .baseUrl("http://192.168.1.11:5000") // Set your target base URL
 
   val feeder = Iterator.continually(Map(
     "value1" -> scala.util.Random.nextInt(1000) // Generate a random number for value2
@@ -21,10 +21,10 @@ class UsuariosConcurrentes extends Simulation {
 
   val registroUsuarios = scenario("Registro usuarios validos").feed(feeder) 
     .exec(http("POST Usuario Valido")
-    .post("/api-commands/users")
+    .post("/user-commands/users/register")
     .body(StringBody("""
       {
-        "usuario":"correo${value1}@valido.com",
+        "correo":"correo${value1}@valido.com",
         "contrasena":"1"
       }
     """)).asJson
@@ -34,10 +34,10 @@ class UsuariosConcurrentes extends Simulation {
     
 
   val registroUsuariosMalos = scenario("Registro Errores").exec(http("POST Usuario Error")
-    .post("/api-commands/users")
+    .post("/user-commands/users/register")
     .body(StringBody("""
       {
-        "usuario":"malo",
+        "correo":"malo",
         "contrasena":"1"
       }
     """)).asJson)
