@@ -8,6 +8,8 @@ Los nombres de los usuarios se obtienen de un feed que añade números del 1 al 
 
 Actualmente el escenario base es:
 
+Si se quieren customizar las pruebas seguir la documentación de Gatling: [documentación](https://docs.gatling.io/reference/script/core/injection/). Con esto se puede cambiar el archivo .scala.
+
 **1000 usuarios concurrentes** + **inserción de fallas de manera aleatoria**
 
 # Requerimientos

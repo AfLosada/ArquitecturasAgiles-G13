@@ -18,14 +18,9 @@ while true; do
         fi
 
     else
-
-        if [ "$SERVER_Y_CREATED" = false ]; then
-            docker restart $SERVER_X_NAME
-            echo "Nuevo servidor Y creado y en ejecución porque el servidor X esta apagado."
-            SERVER_Y_CREATED=true
-        else
-            echo "El servidor X no responde, pero el servidor Y ya fue creado y está en ejecución."
-        fi  
+        docker restart $SERVER_X_NAME
+        echo "Nuevo servidor Y creado y en ejecución porque el servidor X esta apagado."
+        SERVER_Y_CREATED=true
     fi
 
     # Esperar 10 segundos antes de realizar el próximo ping
