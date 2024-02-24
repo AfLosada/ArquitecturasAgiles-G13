@@ -41,7 +41,7 @@ class UsuariosConcurrentes extends Simulation {
         "contrasena":"1"
       }
     """)).asJson
-    .check(status.is(502))
+    .check(status.is(200))
     )
   
   setUp(
