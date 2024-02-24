@@ -26,12 +26,16 @@ services:
       context: ./consulta_usuario
     networks:
       network:
+    ports:
+      - 5001:5001
 
   db_usuario:
     build:
       context: ./db_usuario
     networks:
       network:
+    ports:
+      - 5002:5002
 
   monitor:
     build:
@@ -41,7 +45,7 @@ services:
       - SERVER_X_NAME=experimento-1-registro_usuario-1
       # Esta imagen te la debe proporcionar Emerson, es la imagen del servidor 
       # del codigo fuente (servicio de registro de usuario)
-      - SERVER_X_IMAGE=fc2131b4d05334a5d061ad3f4ef0024bdd351a0a7676bf4d2d8bff87c89ae2f0
+      - SERVER_X_IMAGE=fc2131b4d05334a5d061ad3f4ef0024bdd351a0a7676bf4d2d8bff87c89ae2f0 # intentar hacer esto de manera dinámica
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock  
     networks:

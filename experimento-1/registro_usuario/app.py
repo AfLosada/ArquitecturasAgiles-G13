@@ -5,8 +5,8 @@ import re
 
 app = Flask(__name__)
 
-query_service_url = "http://localhost:5000/user-queries/users/check_user"
-db_service_url = "http://localhost:5000/user-db/users/register"
+query_service_url = "http://consulta_usuario:5001/user-queries/users/check_user"
+db_service_url = "http://db_usuario:5002/register"
 regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
 
 @app.route('/')
@@ -23,6 +23,7 @@ def register_user():
         return jsonify({ "success": True, "message": "Server is shutting down..." })
     else:
         response = requests.post(query_service_url, json=user_data)
+        print(response)
 
         if response.status_code == 200 and response.json()["can_register"]:
             #el correo no existe, registrar en la BD
