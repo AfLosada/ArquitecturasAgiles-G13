@@ -27,6 +27,12 @@ services:
     networks:
       network:
 
+  db_usuario:
+    build:
+      context: ./db_usuario
+    networks:
+      network:
+
   monitor:
     build:
       context: ./monitor
