@@ -5,14 +5,14 @@ import re
 
 app = Flask(__name__)
 
-query_service_url = "http://consulta_usuario:5001/check_user"
+query_service_url = "http://localhost:5000/user-queries/users/check_user"
 regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
 
 @app.route('/')
 def index():
     return 'OK'
 
-@app.route('/register', methods=['POST'])
+@app.route('/user-commands/users/register', methods=['POST'])
 def register_user():
     user_data = request.json
     correo = user_data["correo"]
