@@ -6,36 +6,22 @@ LOG_FILE="registro.log"
 while true; do
 
     if ping -c 1 $SERVER_X_NAME > /dev/null 2>&1; then
-<<<<<<< Updated upstream
-        echo "TODO GUCCI $SERVER_X_NAME"
-    else 
-=======
         echo "[$(date '+%Y-%m-%d %H:%M:%S')] Ejecutandose correctamente $SERVER_X_NAME"
         echo "[$(date '+%Y-%m-%d %H:%M:%S')] Ejecutandose correctamente $SERVER_X_NAME" >> $LOG_FILE
     else
         echo "[$(date '+%Y-%m-%d %H:%M:%S')] Reiniciando $SERVER_X_NAME"
->>>>>>> Stashed changes
         echo "[$(date '+%Y-%m-%d %H:%M:%S')] Reiniciando $SERVER_X_NAME" >> $LOG_FILE
         docker restart $SERVER_X_NAME
     fi
 
     if ping -c 1 $SERVER_Y_NAME > /dev/null 2>&1; then
-<<<<<<< Updated upstream
-        echo "TODO GUCCI $SERVER_Y_NAME"
-    else 
-=======
         echo "[$(date '+%Y-%m-%d %H:%M:%S')] Ejecutandose correctamente $SERVER_Y_NAME"
         echo "[$(date '+%Y-%m-%d %H:%M:%S')] Ejecutandose correctamente $SERVER_Y_NAME" >> $LOG_FILE
     else
         echo "[$(date '+%Y-%m-%d %H:%M:%S')] Reiniciando $SERVER_Y_NAME"
->>>>>>> Stashed changes
         echo "[$(date '+%Y-%m-%d %H:%M:%S')] Reiniciando $SERVER_Y_NAME" >> $LOG_FILE
         docker restart $SERVER_Y_NAME
     fi
 
-<<<<<<< Updated upstream
-    sleep 5
-=======
     sleep 2
->>>>>>> Stashed changes
 done
