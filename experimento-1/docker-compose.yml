@@ -21,6 +21,12 @@ services:
     networks:
       network:
 
+  registro_usuario_fall_back:
+    build:
+      context: ./registro_usuario
+    networks:
+      network:
+
   consulta_usuario:
     build:
       context: ./consulta_usuario
