@@ -129,9 +129,6 @@ server {
 
 En esta rama, los servicios no tienen una copia de la estructura de la BD de los demás servicios por lo que se debe conectar a la Base de datos general para actualizarla o consultarla. A continuación se muestra el esquema descrito anteriormente para el servicio Productos:
 
-###### Notificar cambios
-
-En el archivo api_commands.py, el cual implementa las operaciones de creación y actualización de productos, se publica en la cola el id del producto creado o modificado para que los demás servicios actualicen su respectiva BD.
 
 * Registro de usuarios:
   
@@ -190,6 +187,15 @@ Base.metadata.create_all()
 # Configuración de la sesión de SQLAlchemy
 Session = sessionmaker(bind=engine)
 ```
+
+# Pruebas
+
+Para la validacion de la hipotesis de la arquitectura de microservicios para el registro de usuarios se implementan pruebas de estres, validando la resistencia del servicio de registro de usuarios, la deteccion de la falla por nuestro monitor y la respuesta ante la falla. 
+
+## Instalacion
+
+## Ejecucion 
+
 
 # Resultados de la arquitectura
 
