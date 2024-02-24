@@ -8,22 +8,31 @@ services:
     volumes:
         - ./api-gateway/nginx-proxy.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
-        - server-x
         - monitor
+        - registro_usuario
+        - consulta_usuario
     networks:
       network:
 
   # Servidor principal con codigo de servicio de registro de usuarios
-  server-x:
-    image: alpine:latest
-    command: /bin/sh -c "while :; do sleep 10; done"
+  registro_usuario:
+    build:
+      context: ./registro_usuario
+    ports:
+      - "5002:5002"
+
+  consulta_usuario:
+    build:
+      context: ./consulta_usuario
+    ports:
+      - "5001:5001"
 
   monitor:
     build:
       context: ./monitor
     environment:
       # Este es el nombre del servidor principal
-      - SERVER_X_NAME=server-x
+      - SERVER_X_NAME=registro_usuario-1
       # Esta imagen te la debe proporcionar Emerson, es la imagen del servidor 
       # del codigo fuente (servicio de registro de usuario)
       - SERVER_X_IMAGE=alpine:latest
