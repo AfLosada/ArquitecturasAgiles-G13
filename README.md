@@ -274,7 +274,8 @@ Si se quieren customizar las pruebas seguir la documentación de Gatling: [docum
 
 # Metricas y Resultados de la arquitectura
 
-Las metricas y resultasdos se pueden observa en el siguiente documento: [Resultado experimento1.pdf](https://github.com/AfLosada/ArquitecturasAgiles-G13/files/14398093/experimento1.pdf)
+Las metricas y resultasdos se pueden observa en el siguiente documento: [Resultados experimento1.pdf](https://github.com/AfLosada/ArquitecturasAgiles-G13/files/14398101/Resultados.experimento1.pdf)
+
 
 # CONCLUSION
 La arquitecutra implementada fallo debido a que no se logra levantar el servicio de registro, y nos presenta una indisponibilidad del 18%. Tener un servicio de fallback (que puede fallar con la misma solicitud) no siempre sirve para la disponibilidad, pues este servicio también puede fallar. 
