@@ -1,6 +1,6 @@
 # SportApp - Servicio de Registro de Usuarios - Equipo 13
 
-El propósito de este experimento es probar de la arquitectura diseñada para el servicio de registro de usuarios favoreciendo la disponibilidad, deteccion de falla, respuesta de la falla y enmascaramiento de la falla, desfavoreciendo el tiempo de respuesta, cohesión, Testeabilidad(Complejas). Se espera que en caso de que el servicio de registro de usuarios falle se activa un servicio de respaldo para el registro de usuarios, para esto se utiliza las herramientas: Docker, NGINX, Flask, python, JMeter y SQLite.
+El propósito de este experimento es probar de la arquitectura diseñada para el servicio de registro de usuarios favoreciendo la disponibilidad, deteccion de falla, respuesta de la falla y enmascaramiento de la falla, desfavoreciendo el tiempo de respuesta, cohesión, Testeabilidad(Complejas). Se espera que en caso de que el servicio de registro de usuarios falle se activa un servicio de respaldo para el registro de usuarios, para esto se utiliza las herramientas: Docker, NGINX, Flask, python, Gatling y SQLite.
 
 Este experimento esta relacionado con la [HU006](https://github.com/AfLosada/ArquitecturasAgiles-G13/issues/9),  que tiene como punto de sensibilidad la disponibilidad del servicio de registro de usuarios que tiene un alto grado de insertidumbre, para esto utilizaremos un estilo de arquitectura de microservicios.
 
@@ -243,7 +243,7 @@ done
 
 # Pruebas
 
-Para la validacion de la hipotesis de la arquitectura de microservicios para el registro de usuarios se implementan pruebas de estres en la herramienta de pruebas , validando el servicio de registro de usuarios, la deteccion de la falla por nuestro monitor y la respuesta ante la falla.
+Para la validacion de la hipotesis de la arquitectura de microservicios para el registro de usuarios se implementan pruebas de estres en la herramienta de pruebas Gatling, validando el servicio de registro de usuarios, la deteccion de la falla por nuestro monitor y la respuesta ante la falla.
 
 Para la instalacion y ejecucion del ambiente de pruebas se debe realizar desde una consola bash por ejemplo git bash, ubicarse en la carpeta /experimento-1/gatling y ejecutar el comando.
 
@@ -276,7 +276,7 @@ Si se quieren customizar las pruebas seguir la documentación de Gatling: [docum
 
 Las metricas y resultasdos se pueden observa en el siguiente documento: [Resultado experimento1.pdf](https://github.com/AfLosada/ArquitecturasAgiles-G13/files/14398093/experimento1.pdf)
 
-# CONCLUCION
+# CONCLUSION
 La arquitecutra implementada fallo debido a que no se logra levantar el servicio de registro, y nos presenta una indisponibilidad del 18%. Tener un servicio de fallback (que puede fallar con la misma solicitud) no siempre sirve para la disponibilidad, pues este servicio también puede fallar. 
 
 
