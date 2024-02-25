@@ -27,15 +27,16 @@ Listado de componentes (Microservicios).
 
 ## Instalación
 
-Los servicios de este ejemplo requieren de *flask*, *redis*, *docker* y *docker-compose*. Se debe clonar este repositorio y, en caso de usar Linux Ubuntu ejecutar el archivo install.sh para instalar las librerías y los servicios. Después de ejecutar el archivo se debe reiniciar la máquina virtual. Si usa un sistema operativo distinto, debe instalar las librerías requeridas de manera manual.
+Como primera medida para la instalacion se debe contar con la instalacion completa de Docker para la cual pueden seguir esta guias: [Windows](https://docs.docker.com/desktop/install/windows-install/), [Mac](https://docs.docker.com/desktop/install/mac-install/) o [Linux](https://docs.docker.com/desktop/install/linux-install/).
+
+Despues de tener instalado docker se debe clonar este repositorio a su ambiente local utilizando:
 
 ```
-sh install.sh
+git clone https://github.com/AfLosada/ArquitecturasAgiles-G13
 ```
 
-## Ejecución
 
-Para correr la aplicación se debe ejecutar el siguiente comando:
+Para correr la aplicación se debe ejecutar el siguiente comando dentro de la ubicacion del repositorio en la carpeta experimento-1:
 
 
 ```
@@ -48,92 +49,29 @@ O si prefiere correr la aplicación en background se debe ejecutar el siguiente 
 docker-compose up -d
 ```
 
+Con estos pasos realizamos la instalacion y ejecucion de los microservicios de la arquitectura diseñada para el registro de usuarios.
 
 
 ## Descripción de los servicios
 
-Esta rama (main) muestra la comunicación entre servicios de manera asíncrona e implementa el patrón CQRS. Para la comunicación asíncrona se utiliza Redis como plataforma de mensajería.
+Esta rama (main) muestra la comunicación entre servicios de manera síncrona e implementa el patrón CQRS. Para la comunicación síncrona se utiliza los microservicios.
 
 El experimento implementa tres servicios:
 
 #### Servicio de registro de usuarios
 
-Al implemetar el patrón CQRS las operaciones que expone este servicio se implementan en dos partes:   comandos (api_commands.py) y consultas (api_queries.py). En el archivo api_comands se tienen las siguientes operaciones:
+Al implemetar el patrón CQRS las operaciones que expone este servicio se implementa el servicio de la solicitud de registro de usuarios (registro_usuario/app.py)., el cual manda una peticion al servicio de consulta para validar si se puede o no registrar el usuario, y la peticion a la base de datos para persistir el usuario.
 
-- Crear una nueva orden: Esta operación se implementa en la función OrderListResource a través del método post.
+* register: este servicio lleva la solicitud de confirmacion y la solicitud de registro de usuario. 
+
+- consulta de usuario: Esta operación se implementa en un request. a través del método post.
+
+- Registro de usuario: Esta operación se implementa en un request. a través del método post.
 
 Se puede observar que una vez creada la orden se coloca en la cola el id de la orden para que esta sea procesada.
-
+ 
 ```python
-# add to queue to process order
-q.enqueue(process_order, new_order.id)
-```
-
-En el archivo api_queries se tienen las siguientes operaciones:
-
-- Listar todas las órdenes: Esta operación se implementa en la función OrderListResource a través del método get.
-- Consultar una orden específica: Esta operación se implementa en la función OrderResource a través del método get.
-
-#### Servicio de consulta de usuarios
-
-Al implemetar el patrón CQRS las operaciones que expone este servicio se implementan en dos partes:   comandos (api_commands.py) y consultas (api_queries.py). En el archivo api_comands se tienen las siguientes operaciones:
-
-- Crear un nuevo producto: Esta operación se implementa en la función ProductListResource a través del método post.
-- Modificar un producto: Esta operación se implementa en la función ProductResource a través del método put.
-
-En el archivo api_queries se tienen las siguientes operaciones:
-
-- Listar todos los productos: Esta operación se implementa en la función ProductListResource a través del método get.
-- Consultar un producto específico: Esta operación se implementa en la función ProductResource a través del método get.
-
-#### Base de datos
-
-Al implemetar el patrón CQRS las operaciones que expone este servicio se implementan en dos partes:   comandos (api_commands.py) y consultas (api_queries.py). En el archivo api_comands se tienen las siguientes operaciones:
-
-- Crear un nuevo usuario: Esta operación se implementa en la función UserListResource a través del método post.
-
-En el archivo api_queries se tienen las siguientes operaciones:
-
-- Listar todos los usuarios: Esta operación se implementa en la función UserListResource a través del método get.
-- Consultar un usuario específico: Esta operación se implementa en la función UserResource a través del método get.
-
-#### API Gateway
-
-En este ejemplo se utiliza la configuración proxy del servidor Ngnix para implementar el componente API Gateway. Esta configuración permite que todas las solicitudes se hagan al servidor Ngnix y este redireccione al servicio correspondiente de acuerdo a la operación y ruta especificada en el url, por ejemplo http://localhost/api-commands/users:
-
-```
-server {
-    listen 8080;
-    location /user-commands/users {
-        proxy_pass http://registro_usuario:5000;
-        proxy_set_header X-Real-IP  $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header Host $host;
-    }
-    location /user-queries/users {
-        proxy_pass http://consulta_usuario:5000;
-        proxy_set_header X-Real-IP  $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header Host $host;
-    }
-    location /user-db/users {
-        proxy_pass http://db_usuario:5000;
-        proxy_set_header X-Real-IP  $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header Host $host;
-    }
-}
-```
-
-#### Comunicación síncrona
-
-En esta rama, los servicios no tienen una copia de la estructura de la BD de los demás servicios por lo que se debe conectar a la Base de datos general para actualizarla o consultarla. A continuación se muestra el esquema descrito anteriormente para el servicio Productos:
-
-
-* Registro de usuarios:
-  
-```python
-@app.route('/user-commands/users/register', methods=['POST'])
+@@app.route('/user-commands/users/register', methods=['POST'])
 def register_user():
     user_data = request.json
     correo = user_data["correo"]
@@ -143,6 +81,7 @@ def register_user():
         return jsonify({ "success": True, "message": "Server is shutting down..." })
     else:
         response = requests.post(query_service_url, json=user_data)
+        print(response)
 
         if response.status_code == 200 and response.json()["can_register"]:
             #el correo no existe, registrar en la BD
@@ -152,21 +91,33 @@ def register_user():
             return jsonify({"error": "No se puede registrar el usuario"}), 400
 ```
 
-* Consulta de usuarios:
+#### Servicio de consulta de usuarios
+
+Al implemetar el patrón CQRS las operaciones que expone este servicio se implementan: las consultas (consulta_usuario/app.py). En este archivo se tienen las siguientes operaciones:
+
+- check_user: Esta operación se implementa en la función de consultas de usuario a través del método post, para poder optener la data de la base de datos y poder compararlo si el usuario puede ser registrado devolviendo un "can_register": TRUE o si no puede ser registrado devolviendo un "can_register": FALSE.
 
 ```python
-@app.route('/check_user', methods=['POST'])
+@app.route('/user-queries/users/check_user', methods=['POST'])
 def check_user():
     data = request.json
     correo = data.get("correo")
+    correos_registrados = requests.get(db_service_url).json()
+    usuarios_con_correo_especifico = [usuario for usuario in correos_registrados if usuario["correo"] == correo]
 
-    if correo in coreos_registrados:
+    if len(usuarios_con_correo_especifico) > 0:
         return jsonify({"can_register": False, "message": "El usuario ya existe"})
     else:
         return jsonify({"can_register": True, "message": "El usuario puede ser registrado"})
+        return jsonify({"can_register": True, "message": "El usuario puede ser registrado"})
 ```
 
-* Base de datos:
+#### Base de datos
+
+Al implemetar el patrón CQRS las operaciones que expone este servicio se implementan en dos partes: comandos (register) y consultas (users). para esto se utilizan los metodos:
+
+- users: Esta operación se implementa para obtener los usuarios a través del método get.
+- register: Esta operación se implementa persistir los nuevos usuarios a través del método post.
 
 ```python
 # Configuración de la base de datos con SQLAlchemy
@@ -186,36 +137,119 @@ Base.metadata.create_all()
 
 # Configuración de la sesión de SQLAlchemy
 Session = sessionmaker(bind=engine)
+
+
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    correo = data.get('correo')
+    clave = data.get('clave')
+
+    if not correo or not clave:
+        return jsonify({'error': 'correo and clave are required'}), 400
+
+    session = Session()
+    user = User(correo=correo, clave=clave)
+    session.add(user)
+    session.commit()
+    session.close()
+
+    return jsonify({'message': 'User registered successfully'}), 201
+
+@app.route('/users', methods=['GET'])
+def get_users():
+    session = Session()
+    users = session.query(User).all()
+    session.close()
+
+    users_list = []
+    for user in users:
+        users_list.append({'id': user.id, 'correo': user.correo, 'clave': user.clave})
+
+    return jsonify(users_list)
 ```
+
+#### API Gateway
+
+En este experimento se utiliza la configuración proxy del servidor Ngnix para implementar el componente API Gateway. Esta configuración permite que todas las solicitudes se hagan al servidor Ngnix y este redireccione al servicio correspondiente de acuerdo a la operación y ruta especificada en el url, por ejemplo http://localhost/user-commands/users:
+
+```
+server {
+    listen 8080;
+    location /user-commands/users {
+        proxy_pass http://registro_usuario:5000;
+        proxy_set_header X-Real-IP  $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Host $host;
+        # Fallback in case of errors from the proxied server
+        error_page 500 502 503 504 = @fallback;
+    }
+    location @fallback {
+        # Fallback behavior or route
+        proxy_pass http://registro_usuario_fall_back:5000;
+    }
+    location /user-queries/users {
+        proxy_pass http://consulta_usuario:5001;
+        proxy_set_header X-Real-IP  $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Host $host;
+    }
+    location /user-db/users {
+        proxy_pass http://db_usuario:5002;
+        proxy_set_header X-Real-IP  $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Host $host;
+    }
+}
+```
+
+Dentro del API Gateway se implementa el sistam de monitor para validar el estado del microservicio de registro de usuarios.
+
+## Monitor
+
+Este tiene la funcion de monitorear constantemente el servicio de registro de usuario detectando su estado, si esta UP o DOWN, en caso de que se encuentre DOWN el servicio de Registro de usuarios, reinicia el servicio e inicia el servicio de respaldo, cuando nuevamente detecta el servicio principal UP duerme el servicio de respaldo y vuelve al primer servicio.
+
+
+```#!/bin/bash
+# Server y puede ser remplazado por el nombre que desean adicionarle
+
+LOG_FILE="registro.log"
+
+while true; do
+
+    if ping -c 1 $SERVER_X_NAME > /dev/null 2>&1; then
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Ejecutandose correctamente $SERVER_X_NAME"
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Ejecutandose correctamente $SERVER_X_NAME" >> $LOG_FILE
+    else
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Reiniciando $SERVER_X_NAME"
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Reiniciando $SERVER_X_NAME" >> $LOG_FILE
+        docker restart $SERVER_X_NAME
+    fi
+
+    if ping -c 1 $SERVER_Y_NAME > /dev/null 2>&1; then
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Ejecutandose correctamente $SERVER_Y_NAME"
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Ejecutandose correctamente $SERVER_Y_NAME" >> $LOG_FILE
+    else
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Reiniciando $SERVER_Y_NAME"
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Reiniciando $SERVER_Y_NAME" >> $LOG_FILE
+        docker restart $SERVER_Y_NAME
+    fi
+
+    sleep 2
+done
+
+```
+
 
 # Pruebas
 
-Para la validacion de la hipotesis de la arquitectura de microservicios para el registro de usuarios se implementan pruebas de estres, validando la resistencia del servicio de registro de usuarios, la deteccion de la falla por nuestro monitor y la respuesta ante la falla. 
+Para la validacion de la hipotesis de la arquitectura de microservicios para el registro de usuarios se implementan pruebas de estres en la herramienta de pruebas , validando el servicio de registro de usuarios, la deteccion de la falla por nuestro monitor y la respuesta ante la falla.
+
 
 ## Instalacion
 
 ## Ejecucion 
 
 
-# Resultados de la arquitectura
-
-![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/c27371b0-246e-4d49-bb8f-bc19b0b16389)
-
-![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/f466a70b-8bd0-42a9-8590-583301733296)
-
-![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/6339595c-0f38-48eb-b365-12f0e33a24eb)
-
-![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/4cc3e7d4-daaf-4b30-8784-6eed08897ac5)
-
-![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/5fb6bd68-4c27-4522-b122-2e96466435dc)
-
-![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/fad552f0-a119-4576-a162-42be557e05ef)
-
-![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/d02541f2-0019-46fe-a228-7e2df579566a)
-
-![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/a732916f-e58f-4abb-b1bc-9bf38843904d)
-
-
-
-
+# Metricas y Resultados de la arquitectura
 
