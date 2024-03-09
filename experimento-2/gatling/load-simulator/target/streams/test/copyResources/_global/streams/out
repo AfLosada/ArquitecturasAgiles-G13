@@ -1,0 +1,5 @@
+[debug] Copy resource mappings: 
+[debug] 	(/opt/gatling/user-files/src/test/resources/gatling.conf,/opt/gatling/user-files/target/scala-2.13/test-classes/gatling.conf)
+[debug] 	(/opt/gatling/user-files/src/test/resources/logback-test.xml,/opt/gatling/user-files/target/scala-2.13/test-classes/logback-test.xml)
+[debug] 	(/opt/gatling/user-files/src/test/resources/recorder.conf,/opt/gatling/user-files/target/scala-2.13/test-classes/recorder.conf)
+[debug] 	(/opt/gatling/user-files/src/test/resources/search.csv,/opt/gatling/user-files/target/scala-2.13/test-classes/search.csv)

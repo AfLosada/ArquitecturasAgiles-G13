@@ -1,0 +1,10 @@
+[debug] javaOptions: Vector(-Djdk.debug=release, -Dsbt.script=/usr/local/bin/sbt, -Dsbt.ipcsocket.tmpdir=/tmp/.sbt82f575fe/ipcsocket, -Dswoval.tmpdir=/tmp/.sbt82f575fe/swoval, -Djdk.internal.vm.ci.enabled=true, -Djna.nosys=true, -Dlog4j.ignoreTCL=true, -Djnidispatch.path=/root/.cache/JNA/temp/jna15624617257951156450.tmp, -Djna.platform.library.path=/usr/lib64:/lib64:/usr/lib:/lib, -Djna.loaded=true, -Dnative.encoding=ANSI_X3.4-1968, -Dscala.ext.dirs=/root/.sbt/1.0/java9-rt-ext-graalvm_community_17_0_8, -server, -XX:+HeapDumpOnOutOfMemoryError, -XX:MaxInlineLevel=20, -XX:MaxTrivialSize=12, -Xmx1G)
+[debug] Forking tests - parallelism = false
+[debug] Create a single-thread test executor
+[debug] Runner for io.gatling.sbt.GatlingFramework produced 1 initial tasks for 1 tests.
+[debug]   Running TaskDef(computerdatabase.UsuariosConcurrentes, sbt.ForkMain$SubclassFingerscan@2ff4f00f, false, [SuiteSelector])
+[info] Simulation UsuariosConcurrentes successful.
+[debug]     Produced 0 nested tasks and 1 events.
+[info] Simulation(s) execution ended.
+[debug] Passed tests:
+[debug] 	computerdatabase.UsuariosConcurrentes

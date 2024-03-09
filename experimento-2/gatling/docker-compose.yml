@@ -1,0 +1,11 @@
+version: '3'
+services:
+  gatling:
+    image: sbtscala/scala-sbt:graalvm-ce-22.3.3-b1-java17_1.9.8_3.3.1 # Use a Gatling Docker image
+    volumes:
+      - ./load-simulator:/opt/gatling/user-files # Mount your Gatling user-files directory
+      - test-results:/opt/gatling/results # results folder
+    command: bash -c "cd /opt/gatling/user-files && sbt Gatling/test" # Specify your Gatling simulation class name
+
+volumes:
+  test-results:
