@@ -1,36 +1,37 @@
 from flask import Flask, request, jsonify
+from app_queue import register_user
 import requests
-import os, signal
-import re
 
 app = Flask(__name__)
-
-query_service_url = "http://consulta_usuario:5001/user-queries/users/check_user"
-db_service_url = "http://db_usuario:5002/register"
-regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
-
+CONSULTA_SERVICE_URL = 'http://consulta_usuario:5003/check'
+CERTIFICADOR_SERVICE_URL = 'http://certificador:5001/token'
+  
 @app.route('/')
 def index():
-    return 'OK'
+  return 'OK'
 
-@app.route('/user-commands/users/register', methods=['POST'])
-def register_user():
-    user_data = request.json
-    correo = user_data["correo"]
+@app.route('/register', methods=['POST'])
+def register():
+  data = request.get_json()
+  
+  if 'correo' not in data or 'clave' not in data:
+    return jsonify({'error': 'Datos invalidos'}), 400
 
-    if not re.fullmatch(regex, correo):
-        os.kill(os.getpid(), signal.SIGINT)
-        return jsonify({ "success": True, "message": "Server is shutting down..." })
-    else:
-        response = requests.post(query_service_url, json=user_data)
-        print(response)
+  correo = data['correo']
+  clave = data['clave']
 
-        if response.status_code == 200 and response.json()["can_register"]:
-            #el correo no existe, registrar en la BD
-            response = requests.post(db_service_url, json=user_data)
-            return jsonify({"message": "Usuario registrado exitosamente"})
-        else:
-            return jsonify({"error": "No se puede registrar el usuario"}), 400
+ 
+  url = f'{CONSULTA_SERVICE_URL}/{correo}'
+  certificator_response = requests.get(CERTIFICADOR_SERVICE_URL)
+  token = certificator_response.json()['token']
+  result = requests.get(url, headers={'Authorization': f'Bearer {token}'}).json()
+  
+  if 'clave' in result:
+    return jsonify({'error': 'No se puede registrar usuario'}), 400
+  
+  result = register_user(correo, clave)
+  return result
+  
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port=5002)
