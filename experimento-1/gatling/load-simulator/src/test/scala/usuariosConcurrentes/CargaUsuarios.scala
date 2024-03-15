@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom
  */
 class UsuariosConcurrentes extends Simulation {
   val httpConf = http
-    .baseUrl("http://192.168.1.11:5000") // Set your target base URL
+    .baseUrl("http://localhost:5000/user-commands/users/register") // Set your target base URL
 
   val feeder = Iterator.continually(Map(
     "value1" -> scala.util.Random.nextInt(1000) // Generate a random number for value2
