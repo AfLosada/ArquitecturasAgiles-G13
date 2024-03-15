@@ -4,7 +4,7 @@ import requests
 
 app = Flask(__name__)
 CONSULTA_SERVICE_URL = 'http://consulta_usuario:5003/check'
-CERTIFICADOR_SERVICE_URL = 'http://certificador:5001/token'
+CERTIFICADOR_SERVICE_URL = 'http://autenticador:5001/token'
   
 @app.route('/')
 def index():
@@ -20,14 +20,11 @@ def register():
   correo = data['correo']
   clave = data['clave']
 
- 
-  url = f'{CONSULTA_SERVICE_URL}/{correo}'
-  certificator_response = requests.get(CERTIFICADOR_SERVICE_URL)
-  token = certificator_response.json()['token']
-  result = requests.get(url, headers={'Authorization': f'Bearer {token}'}).json()
-  
-  if 'clave' in result:
-    return jsonify({'error': 'No se puede registrar usuario'}), 400
+  token = request.headers.get('Authorization')
+  result = requests.get(CERTIFICADOR_SERVICE_URL, headers={'Authorization': token}).json()
+
+  if 'error' in result:
+    return jsonify({'error': 'No se puede registrar usuario. TOKEN NO VALIDO'}), 400
   
   result = register_user(correo, clave)
   return result
