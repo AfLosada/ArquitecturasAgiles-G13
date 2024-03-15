@@ -10,7 +10,7 @@ jwt = JWTManager(app)
 def index():
   return 'OK'
 
-@app.route('/check/<string:user_correo>', methods=['GET'])
+@app.route('/user-queries/users/check/<string:user_correo>', methods=['GET'])
 @jwt_required()
 def check(user_correo):
   if not user_correo:

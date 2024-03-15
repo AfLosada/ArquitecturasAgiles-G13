@@ -3,14 +3,14 @@ from app_queue import register_user
 import requests
 
 app = Flask(__name__)
-CONSULTA_SERVICE_URL = 'http://consulta_usuario:5003/check'
+CONSULTA_SERVICE_URL = 'http://consulta_usuario:5003/user-queries/users/check'
 CERTIFICADOR_SERVICE_URL = 'http://autenticador:5001/token'
   
 @app.route('/')
 def index():
   return 'OK'
 
-@app.route('/register', methods=['POST'])
+@app.route('/user-commands/users/register', methods=['POST'])
 def register():
   data = request.get_json()
   

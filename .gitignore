@@ -1,2 +1,5 @@
 .vscode
 **/gatling/test-results
+
+#prueba de nginx rate limit
+**/experimento-2/test_requests.py
