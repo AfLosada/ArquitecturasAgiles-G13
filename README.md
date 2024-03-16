@@ -1,25 +1,30 @@
 # SportApp - Servicio de Registro de Usuarios - Equipo 13
 
-El propósito de este experimento es probar de la arquitectura diseñada para el servicio de registro de usuarios favoreciendo la disponibilidad, deteccion de falla, respuesta de la falla y enmascaramiento de la falla, desfavoreciendo el tiempo de respuesta, cohesión, Testeabilidad(Complejas). Se espera que en caso de que el servicio de registro de usuarios falle se activa un servicio de respaldo para el registro de usuarios, para esto se utiliza las herramientas: Docker, NGINX, Flask, python, Gatling y SQLite.
+El propósito de este experimento es probar de la arquitectura diseñada para el servicio de registro de usuarios favoreciendo la seguridad, deteccion de ataque, respuesta del ataque desfavoreciendo el tiempo de respuesta, cohesión, Testeabilidad(Complejas). Se espera que en caso de que el servicio de registro de usuarios falle se activa un servicio de respaldo para el registro de usuarios, para esto se utiliza las herramientas: Docker, NGINX, JWT, RabbitMQ, Flask, python, Gatling y SQLite.
 
-Este experimento esta relacionado con la [HU006](https://github.com/AfLosada/ArquitecturasAgiles-G13/issues/9),  que tiene como punto de sensibilidad la disponibilidad del servicio de registro de usuarios que tiene un alto grado de insertidumbre, para esto utilizaremos un estilo de arquitectura de microservicios.
+Este experimento esta relacionado con la [HU013](https://github.com/users/AfLosada/projects/1/views/1?pane=issue&itemId=56667221), para este caso validaremos sobre el punto de sensibilidad la seguridad del servicio de registro de usuarios que tiene un alto grado de insertidumbre, para esto utilizaremos un estilo de arquitectura de microservicios.
 
 Se utilizan las tacticas de Arquitectura:
 
-* Monitor (Ping - Echo) : Detección de fallas de disponibilidad del servicio de registro de usuarios.
+* Autenticador : Autentica al usario que va a consumir el servicio de registro de usuario y consulta de usuario, denegando el servicio en caso de que el secret key no sea correcto.
 
 * CQRS : Separación de responsabilidades. La idea es tener diferentes servicios para consultas y para comandos. En este caso los comandos van al servicio de registro de usuarios y las consultas al servicio de consulta de usuarios.
 
 * Redundancia Pasiva con Resincronización de Estado : Recuperación. Cuando se detecte un fallo en el registro de usuarios se creará una nueva instancia del microservicio de registro de usuarios que se encargará de recibir los llamados mientras se reinicia el servicio principal.
+
+* Encolamiento de solicitudes : Pone las solicitudes en una cola o buffer antes de ser procesadas por la base de datos. Esta cola actúa como un amortiguador que permite manejar las solicitudes de manera más eficiente, evitando la sobrecarga del sistema y garantizando un procesamiento ordenado y controlado de las solicitudes.
+
+* Rate Limit : Una configuracion en el API GETWAY que permite limitar y denegar el servicio si se supera un numero de solicitudes por segundo, de modo que se pueda responder automaticamente ante un ataque. 
 
 Listado de componentes (Microservicios).
 | Microservicio | Proposito y comportamiento esperado | Tecnología Asociada |
 |-|-|-|
 | Registro de Usuarios | Maneja los comandos relacionados a la entidad de usuarios, en este caso su registro | Flask |
 | Consulta de Usuarios | Maneja las consultas relacionadas a la entidad de usuarios. | Flask |
+| Cola de Mensajería​ | Recibir las solicitudes del usuario y ser consumido por el servicio de registro de usuarios.​ | RabbitMQ |
 | API Gateway | Maneja la interacción con usuarios, enruta las conexiones al servicio que le corresponda. | NGINX |
-| Monitor | Revisa si los microservicios, en este caso el de registro de usuarios, se encuentra vivo | Python/Bash |
 | Base de Datos | Guarda los registros de usuarios y permite consultarlos. | SQLite |
+| Autenticador | Crear un secretkey para ser consultado por el usuario y ser validado por el servicio de registro de usuarios.​ | Flask |
 
 # Arquitectura de despliegue:
 ![despliegue](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/b7070546-084a-4667-ad48-3a12b7c1ffed)
@@ -36,7 +41,7 @@ git clone https://github.com/AfLosada/ArquitecturasAgiles-G13
 ```
 
 
-Para correr la aplicación se debe ejecutar el siguiente comando dentro de la ubicacion del repositorio en la carpeta experimento-1:
+Para correr la aplicación se debe ejecutar el siguiente comando dentro de la ubicacion del repositorio en la carpeta experimento-2:
 
 
 ```
@@ -68,29 +73,48 @@ Al implemetar el patrón CQRS las operaciones que expone este servicio se implem
 
 - Registro de usuario: Esta operación se implementa en un request. a través del método post.
 
+- Autenticador: Esta operación se implementa en un request. a través del método get y post devolviendo y validando un secret key.
+
+- Cola de mensajeria: Esta operacion se implementa en un request. a traves del metodo get para el servicio de consulta de usuario y un metood post para el servicio de registro de usuario.
+
 Se puede observar que una vez creada la orden se coloca en la cola el id de la orden para que esta sea procesada.
  
 ```python
-@@app.route('/user-commands/users/register', methods=['POST'])
-def register_user():
-    user_data = request.json
-    correo = user_data["correo"]
+@app.route('/user-commands/users/register', methods=['POST'])
+def register():
+  data = request.get_json()
+  
+  if 'correo' not in data or 'clave' not in data:
+    return jsonify({'error': 'Datos invalidos'}), 400
 
-    if not re.fullmatch(regex, correo):
-        os.kill(os.getpid(), signal.SIGINT)
-        return jsonify({ "success": True, "message": "Server is shutting down..." })
-    else:
-        response = requests.post(query_service_url, json=user_data)
-        print(response)
+  correo = data['correo']
+  clave = data['clave']
 
-        if response.status_code == 200 and response.json()["can_register"]:
-            #el correo no existe, registrar en la BD
-            response = requests.post(db_service_url, json=user_data)
-            return jsonify({"message": "Usuario registrado exitosamente"})
-        else:
-            return jsonify({"error": "No se puede registrar el usuario"}), 400
+  token = request.headers.get('Authorization')
+  result = requests.get(CERTIFICADOR_SERVICE_URL, headers={'Authorization': token}).json()
+
+  if 'error' in result:
+    return jsonify({'error': 'No se puede registrar usuario. TOKEN NO VALIDO'}), 400
+  
+  result = register_user(correo, clave)
+  return result
+  
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5002)
 ```
 
+Este contiene una cola de mensajeria actúa como un amortiguador que permite manejar las solicitudes de manera más eficiente.
+```python
+app = Celery('tasks', broker='pyamqp://guest@localhost//')
+DB_SERVICE_URL = 'http://db_usuario:5004/user'
+
+@app.task
+def register_user(correo, clave):
+  datos = {"correo": correo, "clave": clave}
+  result = requests.post(DB_SERVICE_URL, json=datos).json()
+  return result
+```
 #### Servicio de consulta de usuarios
 
 Al implemetar el patrón CQRS las operaciones que expone este servicio se implementan: las consultas (consulta_usuario/app.py). En este archivo se tienen las siguientes operaciones:
@@ -98,18 +122,33 @@ Al implemetar el patrón CQRS las operaciones que expone este servicio se implem
 - check_user: Esta operación se implementa en la función de consultas de usuario a través del método post, para poder optener la data de la base de datos y poder compararlo si el usuario puede ser registrado devolviendo un "can_register": TRUE o si no puede ser registrado devolviendo un "can_register": FALSE.
 
 ```python
-@app.route('/user-queries/users/check_user', methods=['POST'])
-def check_user():
-    data = request.json
-    correo = data.get("correo")
-    correos_registrados = requests.get(db_service_url).json()
-    usuarios_con_correo_especifico = [usuario for usuario in correos_registrados if usuario["correo"] == correo]
+@app.route('/user-queries/users/check/<string:user_correo>', methods=['GET'])
+@jwt_required()
+def check(user_correo):
+  if not user_correo:
+    return jsonify({'error': 'Datos invalidos'}), 400
 
-    if len(usuarios_con_correo_especifico) > 0:
-        return jsonify({"can_register": False, "message": "El usuario ya existe"})
-    else:
-        return jsonify({"can_register": True, "message": "El usuario puede ser registrado"})
-        return jsonify({"can_register": True, "message": "El usuario puede ser registrado"})
+  result = check_user(user_correo)
+  if not result:
+    return jsonify({'error': 'Usuario no encontrado'}), 404
+  else:
+    return jsonify(result), 200
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5003)
+```
+
+Este contiene una cola de mensajeria actúa como un amortiguador que permite manejar las solicitudes de manera más eficiente.
+
+```python
+app = Celery('tasks', broker='pyamqp://guest@localhost//')
+DB_SERVICE_URL = 'http://db_usuario:5004/users?correo='
+
+@app.task
+def check_user(user_correo):
+  url = f'{DB_SERVICE_URL}{user_correo}'
+  result = requests.get(url).json()
+  return result
 ```
 
 #### Base de datos
@@ -120,84 +159,78 @@ Al implemetar el patrón CQRS las operaciones que expone este servicio se implem
 - register: Esta operación se implementa persistir los nuevos usuarios a través del método post.
 
 ```python
-# Configuración de la base de datos con SQLAlchemy
-DATABASE_URL = 'sqlite:///database.db'
-engine = create_engine(DATABASE_URL)
-Base = declarative_base(bind=engine)
+def create_flask_app():
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Definición del modelo de usuario
-class User(Base):
-    __tablename__ = 'users'
-    id = Column(Integer, primary_key=True)
-    correo = Column(String)
-    clave = Column(String)
+    app_context = app.app_context()
+    app_context.push()
+    add_urls(app)
+    CORS(app, origins = '*')
+    return app
 
-# Crea todas las tablas definidas en el modelo
-Base.metadata.create_all()
+def add_urls(app):
+    api = Api(app)
+    api.add_resource(VistaUsuario, '/user', '/user/<int:user_id>')
+    api.add_resource(VistaUsuarios, '/users')
 
-# Configuración de la sesión de SQLAlchemy
-Session = sessionmaker(bind=engine)
-
-
-@app.route('/register', methods=['POST'])
-def register():
-    data = request.get_json()
-    correo = data.get('correo')
-    clave = data.get('clave')
-
-    if not correo or not clave:
-        return jsonify({'error': 'correo and clave are required'}), 400
-
-    session = Session()
-    user = User(correo=correo, clave=clave)
-    session.add(user)
-    session.commit()
-    session.close()
-
-    return jsonify({'message': 'User registered successfully'}), 201
-
-@app.route('/users', methods=['GET'])
-def get_users():
-    session = Session()
-    users = session.query(User).all()
-    session.close()
-
-    users_list = []
-    for user in users:
-        users_list.append({'id': user.id, 'correo': user.correo, 'clave': user.clave})
-
-    return jsonify(users_list)
+if __name__ == '__main__':
+    app = create_flask_app()
+    db.init_app(app)
+    db.create_all()
+    app.run(debug=True, host='0.0.0.0', port=5004)
 ```
 
 #### API Gateway
 
 En este experimento se utiliza la configuración proxy del servidor Ngnix para implementar el componente API Gateway. Esta configuración permite que todas las solicitudes se hagan al servidor Ngnix y este redireccione al servicio correspondiente de acuerdo a la operación y ruta especificada en el url, por ejemplo http://localhost/user-commands/users:
+Adicional se implementa un Rate Limit que limite el numero de solicitudes por segundo y el burst de solictudes para resistir y reaccionar ante un ataque.
 
 ```
+# Configuracion de Nginx para el rate limit en el servicio de registro de usuarios
+limit_req_zone $binary_remote_addr zone=registro_usuario_limit:10m rate=1r/s;
+
+# Mapa para determinar si se aplica el rate limit o se demora la respuesta
+map $limit_req_status $delay_duration {
+    429     30s;
+    default 0s;
+}
+
+# Configuración del servidor
 server {
-    listen 8080;
+    listen 5000;
+
+    # Configuración para el servicio de registro de usuarios
     location /user-commands/users {
-        proxy_pass http://registro_usuario:5000;
-        proxy_set_header X-Real-IP  $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
+        # Aplicar el rate limit a esta ubicación
+        limit_req zone=registro_usuario_limit burst=5;
+
+        # Determinar si se debe aplicar un retraso
+        if ($limit_req_status = 429) {
+            set $delay "${delay_duration}";
+        }
+
+        proxy_pass http://registro_usuario:5002;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $host;
-        # Fallback in case of errors from the proxied server
-        error_page 500 502 503 504 = @fallback;
+
     }
-    location @fallback {
-        # Fallback behavior or route
-        proxy_pass http://registro_usuario_fall_back:5000;
-    }
+
+    # Configuración para el servicio de consultas de usuarios
     location /user-queries/users {
-        proxy_pass http://consulta_usuario:5001;
-        proxy_set_header X-Real-IP  $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_pass http://consulta_usuario:5003;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $host;
     }
-    location /user-db/users {
-        proxy_pass http://db_usuario:5002;
-        proxy_set_header X-Real-IP  $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
+
+    # Configuración para la base de datos de usuarios
+    location /users {
+        proxy_pass http://db_usuario:5004;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $host;
     }
 }
@@ -205,38 +238,46 @@ server {
 
 Dentro del API Gateway se implementa el sistam de monitor para validar el estado del microservicio de registro de usuarios.
 
-## Monitor
+## Autenticador
 
-Este tiene la funcion de monitorear constantemente el servicio de registro de usuario detectando su estado, si esta UP o DOWN, en caso de que se encuentre DOWN el servicio de Registro de usuarios, reinicia el servicio e inicia el servicio de respaldo, cuando nuevamente detecta el servicio principal UP vuelve al primer servicio.
+Este tiene la funcion de dar y validar un secret key constantemente  autenticando al usuario que solicita el servicio de registro de usuario, si el secret key no es el adecuado este bloquea el acceso al servicio, realizando el aseguramiento del servicio.
 
 
 ```#!/bin/bash
-# Server y puede ser remplazado por el nombre que desean adicionarle
+import datetime
+import jwt
+from flask import Flask, jsonify, request
 
-LOG_FILE="registro.log"
+app = Flask(__name__)
+app.config['JWT_SECRET_KEY'] = 'grupo_17_secret_key'
 
-while true; do
+@app.route('/token', methods=['POST'])
+def generar_token():
+    fecha_hora_actual = datetime.datetime.utcnow()
+    expiracion = fecha_hora_actual + datetime.timedelta(hours=5)
+    token = jwt.encode({'exp': expiracion}, key='grupo_17_secret_key', algorithm='HS256')
+    return jsonify({'token': token}), 200
 
-    if ping -c 1 $SERVER_X_NAME > /dev/null 2>&1; then
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Ejecutandose correctamente $SERVER_X_NAME"
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Ejecutandose correctamente $SERVER_X_NAME" >> $LOG_FILE
-    else
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Reiniciando $SERVER_X_NAME"
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Reiniciando $SERVER_X_NAME" >> $LOG_FILE
-        docker restart $SERVER_X_NAME
-    fi
+@app.route('/token', methods=['GET'])
+def verificar_token():
+    token = request.headers.get('Authorization')
+    if not token:
+        return jsonify({'error': 'Token no proporcionado'}), 401
+    try:
+        payload = jwt.decode(token, key='grupo_17_secret_key', algorithms=['HS256'])
+        expiracion = datetime.datetime.utcfromtimestamp(payload['exp'])
+        diferencia_tiempo = expiracion - datetime.datetime.utcnow()
+        if diferencia_tiempo.total_seconds() / 3600 < 5:
+            return jsonify({'valido': True}), 200
+        else:
+            return jsonify({'error': 'Token expirado'}), 401
+    except jwt.ExpiredSignatureError:
+        return jsonify({'error': 'Token expirado'}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({'error': 'Token inválido'}), 401
 
-    if ping -c 1 $SERVER_Y_NAME > /dev/null 2>&1; then
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Ejecutandose correctamente $SERVER_Y_NAME"
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Ejecutandose correctamente $SERVER_Y_NAME" >> $LOG_FILE
-    else
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Reiniciando $SERVER_Y_NAME"
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Reiniciando $SERVER_Y_NAME" >> $LOG_FILE
-        docker restart $SERVER_Y_NAME
-    fi
-
-    sleep 2
-done
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5001)
 
 ```
 
