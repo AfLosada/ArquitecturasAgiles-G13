@@ -27,7 +27,7 @@ Listado de componentes (Microservicios).
 | Autenticador | Crear un secretkey para ser consultado por el usuario y ser validado por el servicio de registro de usuarios.​ | Flask |
 
 # Arquitectura de despliegue:
-![despliegue](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/b7070546-084a-4667-ad48-3a12b7c1ffed)
+![Imagen de WhatsApp 2024-03-16 a las 12 48 14_72c68f92](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/0fa05193-8500-47e2-a02a-24ba701f0828)
 
 
 ## Instalación
