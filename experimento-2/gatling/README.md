@@ -1,5 +1,9 @@
 # Instrucciones
 
+## IMPORTANTE
+
+Cambiar la IP que se encuentra en [lineas 34 y 42](experimento-2/gatling/load-simulator/src/test/scala/usuariosConcurrentes/CargaUsuarios.scala). Tiene que ser la ip de su máquina.
+
 Correr el archivo load.sh. Esto correrá las pruebas de carga de Gatling que están en la carpeta `load-simulator`. Los resultados de las pruebas se guardarán en el archivo test-results. Para que las pruebas sean exitosas es necesario que la aplicación esté corriendo.
 
 En el archivo [CargaUsuarios.scala](experimento-1\gatling\load-simulator\src\test\scala\usuariosConcurrentes\CargaUsuarios.scala) se encuentran los detalles de las pruebas. Hay urls y escenarios con diferentes tipos de carga.
