@@ -26,3 +26,10 @@ A brief description of what this project does and who it's for.
 
 ## Encolamiento
 - Se hace a travez de la libreria Celery, ver los archivos app_queue.py del servicio de registro y consulta.
+
+## Prueba
+- Se hizo una prueba con las siguientes características:
+    - Se solicita un token para poder hacer registros de usuario
+    - Se hace 1 registro por segundo durante 20 segundos
+    - Se hacen 5 registros por segundo durante 10 segundos
+    - Se hacen 2 registros por segundo durante 20 segundos

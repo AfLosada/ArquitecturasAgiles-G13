@@ -45,8 +45,7 @@ class UsuariosConcurrentes extends Simulation { // Set your target base URL
       http("post usuario valido")
       .post("http://192.168.1.11:5000/user-commands/users/register")
         .header("Authorization", session => {
-          val bearer = s"Bearer ${session("token").as[String]}"
-          println(bearer)
+          val bearer = s"${session("token").as[String]}"
           bearer
         })
         .body(StringBody("""
@@ -57,19 +56,15 @@ class UsuariosConcurrentes extends Simulation { // Set your target base URL
         """)
         ).asJson
       .check( status.is(200),bodyString.saveAs("BODY"))
-    ).exec(session => {
-      val response = session("BODY").as[String]
-      println(s"Response body: \n$response")
-      session
-    })
+    )
     .pause(1)
   
     setUp(
       getTokenScenario.inject(constantUsersPerSec(1) during (1 seconds)),
       registroUsuarios.inject(
         nothingFor(5 seconds),
-        constantUsersPerSec(2).during(30.seconds),
-        constantUsersPerSec(5).during(5.seconds),
+        constantUsersPerSec(1).during(30.seconds),
+        constantUsersPerSec(5).during(10.seconds),
         constantUsersPerSec(2).during(30.seconds),
       )
     )
