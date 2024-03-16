@@ -333,7 +333,8 @@ El contenedor de nginx detecta cuando se exceden las solicitudes
 - Se hacen 5 registros por segundo durante 10 segundos​
 - Se hacen 2 registros por segundo durante 20 segundos​
 ### Resultados 
-
+[Presentacion del experimiento-2 AAS-H810.pdf](https://github.com/AfLosada/ArquitecturasAgiles-G13/files/14624749/AAS-H810.pdf)
+ 
 - ​Durante los primeros 20 segundos se obtienen respuestas válidas​
 - Durante los siguientes 10 segundos los registros son bloqueados​
 - Durante los siguientes 20 segundos algunos registros son bloqueados por el tema del rate limiting. ​
