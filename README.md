@@ -321,6 +321,11 @@ El rate-limiting de nginx fue configurado de manera exitosa y limitó la cantida
 
 ![resultados](./fotos/resultadosg13-2.png)
 
+El contenedor de nginx detecta cuando se exceden las solicitudes
+
+![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/31115265/2be89b2e-0d48-42c1-b792-7bd8a9998e6c)
+
+
 ### Se hizo una prueba con las siguientes características:​
 
 - Se solicita un token para poder hacer registros de usuario​
