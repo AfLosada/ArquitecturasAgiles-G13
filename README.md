@@ -72,9 +72,7 @@ Al implemetar el patrón CQRS las operaciones que expone este servicio se implem
 - consulta de usuario: Esta operación se implementa en un request. a través del método post.
 
 - Registro de usuario: Esta operación se implementa en un request. a través del método post.
-
-- Autenticador: Esta operación se implementa en un request. a través del método get y post devolviendo y validando un secret key.
-
+  
 - Cola de mensajeria: Esta operacion se implementa en un request. a traves del metodo get para el servicio de consulta de usuario y un metood post para el servicio de registro de usuario.
 
 Se puede observar que una vez creada la orden se coloca en la cola el id de la orden para que esta sea procesada.
