@@ -1,0 +1,6 @@
+[error] /opt/gatling/user-files/src/test/scala/usuariosConcurrentes/CargaUsuarios.scala:39:13: type mismatch;
+[error]  found   : io.gatling.http.request.builder.HttpRequestBuilder
+[error]  required: io.gatling.commons.validation.Validation[io.gatling.core.session.Session]
+[error]       .check(status.is(200))
+[error]             ^
+[error] one error found

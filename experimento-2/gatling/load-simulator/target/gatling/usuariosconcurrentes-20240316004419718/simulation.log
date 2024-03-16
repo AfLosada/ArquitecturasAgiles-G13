@@ -1,0 +1,81 @@
+RUN	computerdatabase.UsuariosConcurrentes	usuariosconcurrentes	1710549859718	 	3.10.4
+USER	Registro usuarios validos	START	1710549860680
+USER	Registro usuarios validos	START	1710549861151
+USER	Registro usuarios validos	START	1710549861652
+USER	Registro usuarios validos	START	1710549862153
+USER	Registro usuarios validos	START	1710549862654
+USER	Registro usuarios validos	START	1710549863147
+USER	Registro usuarios validos	START	1710549863648
+REQUEST		Get Token	1710549863641	1710549863642	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549863654
+USER	Registro usuarios validos	END	1710549863658
+USER	Registro usuarios validos	START	1710549864147
+REQUEST		Get Token	1710549864640	1710549864642	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549864642
+USER	Registro usuarios validos	END	1710549864642
+USER	Registro usuarios validos	START	1710549864648
+USER	Registro usuarios validos	START	1710549865147
+REQUEST		Get Token	1710549865640	1710549865641	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549865641
+USER	Registro usuarios validos	END	1710549865642
+USER	Registro usuarios validos	START	1710549865647
+USER	Registro usuarios validos	START	1710549866147
+REQUEST		Get Token	1710549866639	1710549866640	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549866640
+USER	Registro usuarios validos	END	1710549866641
+USER	Registro usuarios validos	START	1710549866647
+USER	Registro usuarios validos	START	1710549867148
+REQUEST		Get Token	1710549867640	1710549867640	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549867641
+USER	Registro usuarios validos	END	1710549867642
+USER	Registro usuarios validos	START	1710549867649
+USER	Registro usuarios validos	START	1710549868148
+REQUEST		Get Token	1710549868159	1710549868160	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549868160
+USER	Registro usuarios validos	END	1710549868160
+REQUEST		Get Token	1710549868639	1710549868640	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549868640
+USER	Registro usuarios validos	END	1710549868641
+USER	Registro usuarios validos	START	1710549868648
+USER	Registro usuarios validos	START	1710549869147
+REQUEST		Get Token	1710549869159	1710549869160	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549869161
+USER	Registro usuarios validos	END	1710549869161
+REQUEST		Get Token	1710549869639	1710549869640	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549869640
+USER	Registro usuarios validos	END	1710549869641
+USER	Registro usuarios validos	START	1710549869648
+USER	Registro usuarios validos	START	1710549870148
+REQUEST		Get Token	1710549870159	1710549870160	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549870160
+USER	Registro usuarios validos	END	1710549870161
+REQUEST		Get Token	1710549870640	1710549870641	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549870641
+USER	Registro usuarios validos	END	1710549870641
+REQUEST		Get Token	1710549871159	1710549871160	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549871161
+USER	Registro usuarios validos	END	1710549871161
+REQUEST		Get Token	1710549871640	1710549871641	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549871641
+USER	Registro usuarios validos	END	1710549871642
+REQUEST		Get Token	1710549872000	1710549872000	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549872001
+USER	Registro usuarios validos	END	1710549872001
+REQUEST		Get Token	1710549872329	1710549872330	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549872330
+USER	Registro usuarios validos	END	1710549872331
+REQUEST		Get Token	1710549872640	1710549872640	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549872641
+USER	Registro usuarios validos	END	1710549872641
+REQUEST		Get Token	1710549872999	1710549873000	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549873001
+USER	Registro usuarios validos	END	1710549873001
+REQUEST		Get Token	1710549873329	1710549873330	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549873330
+USER	Registro usuarios validos	END	1710549873331
+REQUEST		Get Token	1710549873639	1710549873640	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549873641
+USER	Registro usuarios validos	END	1710549873641
+REQUEST		Get Token	1710549873999	1710549874000	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549874001
+USER	Registro usuarios validos	END	1710549874001

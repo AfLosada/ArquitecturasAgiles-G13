@@ -1,0 +1,64 @@
+RUN	computerdatabase.UsuariosConcurrentes	usuariosconcurrentes	1710549594401	 	3.10.4
+USER	Registro usuarios validos	START	1710549595349
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549595361
+USER	Registro usuarios validos	END	1710549595366
+USER	Retrieve Token	START	1710549595374
+USER	Registro usuarios validos	START	1710549595823
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549595823
+USER	Registro usuarios validos	END	1710549595824
+USER	Registro usuarios validos	START	1710549596323
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549596323
+USER	Registro usuarios validos	END	1710549596324
+USER	Registro usuarios validos	START	1710549596824
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549596824
+USER	Registro usuarios validos	END	1710549596825
+USER	Registro usuarios validos	START	1710549597324
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549597325
+USER	Registro usuarios validos	END	1710549597325
+USER	Registro usuarios validos	START	1710549597820
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549597821
+USER	Registro usuarios validos	END	1710549597821
+REQUEST		Get Token	1710549598314	1710549598316	KO	j.n.ConnectException: finishConnect(..) failed: Connection refused
+USER	Retrieve Token	END	1710549598319
+USER	Registro usuarios validos	START	1710549598320
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549598321
+USER	Registro usuarios validos	END	1710549598322
+USER	Registro usuarios validos	START	1710549598820
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549598820
+USER	Registro usuarios validos	END	1710549598821
+USER	Registro usuarios validos	START	1710549599321
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549599321
+USER	Registro usuarios validos	END	1710549599322
+USER	Registro usuarios validos	START	1710549599821
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549599821
+USER	Registro usuarios validos	END	1710549599822
+USER	Registro usuarios validos	START	1710549600321
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549600321
+USER	Registro usuarios validos	END	1710549600322
+USER	Registro usuarios validos	START	1710549600821
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549600821
+USER	Registro usuarios validos	END	1710549600822
+USER	Registro usuarios validos	START	1710549601321
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549601321
+USER	Registro usuarios validos	END	1710549601322
+USER	Registro usuarios validos	START	1710549601821
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549601821
+USER	Registro usuarios validos	END	1710549601822
+USER	Registro usuarios validos	START	1710549602321
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549602321
+USER	Registro usuarios validos	END	1710549602322
+USER	Registro usuarios validos	START	1710549602820
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549602821
+USER	Registro usuarios validos	END	1710549602821
+USER	Registro usuarios validos	START	1710549603320
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549603321
+USER	Registro usuarios validos	END	1710549603322
+USER	Registro usuarios validos	START	1710549603820
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549603821
+USER	Registro usuarios validos	END	1710549603821
+USER	Registro usuarios validos	START	1710549604321
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549604321
+USER	Registro usuarios validos	END	1710549604322
+USER	Registro usuarios validos	START	1710549604820
+ERROR	post usuario valido: Failed to build request: Failed to build request: j.u.NoSuchElementException: No attribute named 'accesskey' is defined 	1710549604821
+USER	Registro usuarios validos	END	1710549604821
