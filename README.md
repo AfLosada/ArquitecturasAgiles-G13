@@ -280,4 +280,62 @@ Las metricas y resultasdos se pueden observa en el siguiente documento: [Resulta
 # CONCLUSION
 La arquitecutra implementada fallo debido a que no se logra levantar el servicio de registro, y nos presenta una indisponibilidad del 18%. Tener un servicio de fallback (que puede fallar con la misma solicitud) no siempre sirve para la disponibilidad, pues este servicio también puede fallar. 
 
+# Pruebas Experimento 2
 
+Para la validacion de la hipotesis de la arquitectura de microservicios para el registro de usuarios se implementan pruebas de estres en la herramienta de pruebas Gatling, validando el servicio de registro de usuarios, la deteccion de la falla por nuestro monitor y la respuesta ante la falla.
+
+Para la instalacion y ejecucion del ambiente de pruebas se debe realizar desde una consola bash por ejemplo git bash, ubicarse en la carpeta /experimento-1/gatling y ejecutar el comando.
+
+
+```bash
+./load.sh
+```
+Esto correrá las pruebas de carga de Gatling que están en la carpeta `load-simulator`. Los resultados de las pruebas se guardarán en el archivo test-results. Para que las pruebas sean exitosas es necesario que la aplicación esté corriendo.
+En caso de presentar error: 
+
+![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/e06814da-76db-4236-b9fb-9f53b1c79ce3)
+
+se debe entrar al archivo load.sh y modificarlo segun salga en tu git bash:
+![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/ba2b6a20-20fe-4876-a335-2a6d1b7eb5f8)
+
+![image](https://github.com/AfLosada/ArquitecturasAgiles-G13/assets/142316997/c8ab6084-d83d-4cf1-a0d6-768664fa250e)
+
+
+En el archivo [CargaUsuarios.scala](experimento-2\gatling\load-simulator\src\test\scala\usuariosConcurrentes\CargaUsuarios.scala) se encuentran los detalles de las pruebas. Hay urls y escenarios con diferentes tipos de carga.
+
+Los nombres de los usuarios se obtienen de un feed que añade números del 1 al 1000.
+
+Actualmente el escenario base es:
+
+Si se quieren customizar las pruebas seguir la documentación de Gatling: [documentación](https://docs.gatling.io/reference/script/core/injection/). Con esto se puede cambiar el archivo .scala.
+
+## Resultados Experimento 2
+
+El rate-limiting de nginx fue configurado de manera exitosa y limitó la cantidad de requests que se pueden hacer de manera concurrente a un mismo enpoint.
+
+![resultados](./fotos/resultadosg13.png)
+
+![resultados](./fotos/resultadosg13-2.png)
+
+### Se hizo una prueba con las siguientes características:​
+
+- Se solicita un token para poder hacer registros de usuario​
+- Se hace 1 registro por segundo durante 20 segundos​
+- Se hacen 5 registros por segundo durante 10 segundos​
+- Se hacen 2 registros por segundo durante 20 segundos​
+### Resultados 
+
+- ​Durante los primeros 20 segundos se obtienen respuestas válidas​
+- Durante los siguientes 10 segundos los registros son bloqueados​
+- Durante los siguientes 20 segundos algunos registros son bloqueados por el tema del rate limiting. ​
+
+[url resultados](https://pruebas-gatling-seguridad.vercel.app/req_post-usuario-va-1086779557.html)
+
+[video](https://www.youtube.com/watch?v=DzZ3WkSZBEE)
+
+### Conclusion
+
+La arquitectura presentada cumple con el requerimiento pues:
+
+1. El autenticador requiere que las peticiones que se hagan vengan con un token válido
+2. El rate-limiting del nginx es capaz de limitar las peticiones cuando recibe bastantes.
