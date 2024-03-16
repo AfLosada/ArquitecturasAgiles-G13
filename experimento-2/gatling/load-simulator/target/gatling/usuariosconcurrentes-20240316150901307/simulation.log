@@ -1,0 +1,81 @@
+RUN	computerdatabase.UsuariosConcurrentes	usuariosconcurrentes	1710601741307	 	3.10.4
+USER	Registro usuarios validos	START	1710601742633
+USER	Registro usuarios validos	START	1710601743108
+USER	Registro usuarios validos	START	1710601743609
+USER	Registro usuarios validos	START	1710601744110
+USER	Registro usuarios validos	START	1710601744610
+USER	Registro usuarios validos	START	1710601745105
+USER	Registro usuarios validos	START	1710601745606
+REQUEST		Get Token	1710601745600	1710601745609	OK	 
+USER	Registro usuarios validos	START	1710601746105
+USER	Registro usuarios validos	START	1710601746605
+REQUEST		Get Token	1710601746599	1710601746606	OK	 
+USER	Registro usuarios validos	START	1710601747106
+REQUEST		Get Token	1710601747599	1710601747605	OK	 
+USER	Registro usuarios validos	START	1710601747606
+USER	Registro usuarios validos	START	1710601748105
+REQUEST		Get Token	1710601748599	1710601748605	OK	 
+USER	Registro usuarios validos	START	1710601748606
+USER	Registro usuarios validos	START	1710601749106
+REQUEST		Get Token	1710601749598	1710601749604	OK	 
+USER	Registro usuarios validos	START	1710601749606
+USER	Registro usuarios validos	START	1710601750106
+REQUEST		Get Token	1710601750119	1710601750124	OK	 
+REQUEST		Get Token	1710601750599	1710601750605	OK	 
+USER	Registro usuarios validos	START	1710601750606
+USER	Registro usuarios validos	START	1710601751106
+REQUEST		post usuario valido	1710601751118	1710601751129	KO	status.find.is(200), but actually found 400
+USER	Registro usuarios validos	END	1710601751135
+REQUEST		Get Token	1710601751599	1710601751604	OK	 
+USER	Registro usuarios validos	START	1710601751606
+USER	Registro usuarios validos	START	1710601752106
+REQUEST		Get Token	1710601752119	1710601752124	OK	 
+REQUEST		post usuario valido	1710601752598	1710601752607	KO	status.find.is(200), but actually found 400
+USER	Registro usuarios validos	END	1710601752607
+REQUEST		Get Token	1710601753119	1710601753125	OK	 
+REQUEST		post usuario valido	1710601753599	1710601753607	KO	status.find.is(200), but actually found 400
+USER	Registro usuarios validos	END	1710601753608
+REQUEST		Get Token	1710601753958	1710601753964	OK	 
+REQUEST		Get Token	1710601754288	1710601754294	OK	 
+REQUEST		post usuario valido	1710601754599	1710601754607	KO	status.find.is(200), but actually found 400
+USER	Registro usuarios validos	END	1710601754608
+REQUEST		Get Token	1710601754959	1710601754965	OK	 
+REQUEST		Get Token	1710601755289	1710601755294	OK	 
+REQUEST		post usuario valido	1710601755599	1710601755607	KO	status.find.is(200), but actually found 400
+USER	Registro usuarios validos	END	1710601755608
+REQUEST		Get Token	1710601755958	1710601755964	OK	 
+REQUEST		Get Token	1710601756288	1710601756294	OK	 
+REQUEST		post usuario valido	1710601756598	1710601756607	KO	status.find.is(200), but actually found 400
+USER	Registro usuarios validos	END	1710601756608
+REQUEST		Get Token	1710601757288	1710601757294	OK	 
+REQUEST		Get Token	1710601757599	1710601757605	OK	 
+REQUEST		post usuario valido	1710601756958	1710601757608	KO	status.find.is(200), but actually found 400
+USER	Registro usuarios validos	END	1710601757608
+REQUEST		Get Token	1710601758118	1710601758125	OK	 
+REQUEST		Get Token	1710601758368	1710601758374	OK	 
+REQUEST		post usuario valido	1710601757868	1710601758608	KO	status.find.is(200), but actually found 400
+USER	Registro usuarios validos	END	1710601758609
+REQUEST		post usuario valido	1710601758598	1710601759608	KO	status.find.is(200), but actually found 400
+USER	Registro usuarios validos	END	1710601759608
+REQUEST		post usuario valido	1710601760118	1710601760122	KO	status.find.is(200), but actually found 503
+USER	Registro usuarios validos	END	1710601760123
+REQUEST		post usuario valido	1710601760368	1710601760372	KO	status.find.is(200), but actually found 503
+USER	Registro usuarios validos	END	1710601760372
+REQUEST		post usuario valido	1710601758868	1710601760610	KO	status.find.is(200), but actually found 400
+USER	Registro usuarios validos	END	1710601760611
+REQUEST		post usuario valido	1710601760868	1710601760872	KO	status.find.is(200), but actually found 503
+USER	Registro usuarios validos	END	1710601760873
+REQUEST		post usuario valido	1710601761118	1710601761122	KO	status.find.is(200), but actually found 503
+USER	Registro usuarios validos	END	1710601761122
+REQUEST		post usuario valido	1710601761368	1710601761372	KO	status.find.is(200), but actually found 503
+USER	Registro usuarios validos	END	1710601761372
+REQUEST		post usuario valido	1710601759119	1710601761610	KO	status.find.is(200), but actually found 400
+USER	Registro usuarios validos	END	1710601761610
+REQUEST		post usuario valido	1710601759369	1710601762611	KO	status.find.is(200), but actually found 400
+USER	Registro usuarios validos	END	1710601762611
+REQUEST		post usuario valido	1710601759598	1710601763611	KO	status.find.is(200), but actually found 400
+USER	Registro usuarios validos	END	1710601763612
+REQUEST		post usuario valido	1710601759868	1710601764612	KO	status.find.is(200), but actually found 400
+USER	Registro usuarios validos	END	1710601764612
+REQUEST		post usuario valido	1710601760599	1710601765612	KO	status.find.is(200), but actually found 400
+USER	Registro usuarios validos	END	1710601765613

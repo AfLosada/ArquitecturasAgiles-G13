@@ -23,24 +23,32 @@ class UsuariosConcurrentes extends Simulation { // Set your target base URL
     "value1" -> scala.util.Random.nextInt(1000) // Generate a random number for value2
   ))
 
-  val getTokenScenario = scenario("Retrieve Token")
-    .exec(http("Get Token")
-      .get("http://localhost:5003/token")
-      .check(jsonPath("$.token").find.saveAs("accesskey")))
+  private var token = ""
 
-  val registroUsuarios = scenario("Registro usuarios validos").feed(feeder)
+  val getTokenScenario = scenario("Token")
     .exec(
       http("Get Token")
         .post("http://192.168.1.11:5001/token")
         .check(
-          jsonPath("$.token")
+          jsonPath("$..token")
           .find
-          .saveAs("accesskey"))
-    )
+          .saveAs("token"))
+    ).exitHereIfFailed.exec { session => {
+      token = session("token").as[String]
+      session
+    }
+    }
+
+  val registroUsuarios = scenario("Registro usuarios").feed(feeder)
+    .exec(session => session.set("token", token))
     .exec(
       http("post usuario valido")
       .post("http://192.168.1.11:5000/user-commands/users/register")
-        .header("Authorization", session => s"Bearer ${session("accesskey").as[String]}")
+        .header("Authorization", session => {
+          val bearer = s"Bearer ${session("token").as[String]}"
+          println(bearer)
+          bearer
+        })
         .body(StringBody("""
         {
           "correo":"correo${value1}@valido.com",
@@ -48,16 +56,21 @@ class UsuariosConcurrentes extends Simulation { // Set your target base URL
         }
         """)
         ).asJson
-      .check(status.is(200))
-    )
+      .check( status.is(200),bodyString.saveAs("BODY"))
+    ).exec(session => {
+      val response = session("BODY").as[String]
+      println(s"Response body: \n$response")
+      session
+    })
     .pause(1)
   
     setUp(
-      registroUsuarios.inject(constantUsersPerSec(2).during(10.seconds)))
-      .throttle(
-        reachRps(5).in(20.seconds),
-        holdFor(5.seconds),
-        jumpToRps(1),
-        holdFor(60)
+      getTokenScenario.inject(constantUsersPerSec(1) during (1 seconds)),
+      registroUsuarios.inject(
+        nothingFor(5 seconds),
+        constantUsersPerSec(2).during(30.seconds),
+        constantUsersPerSec(5).during(5.seconds),
+        constantUsersPerSec(2).during(30.seconds),
+      )
     )
 }

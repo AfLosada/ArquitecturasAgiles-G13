@@ -1,0 +1,93 @@
+[debug] > Exec(early(addDefaultCommands), None, None)
+[debug] > Exec(addDefaultCommands, None, None)
+[debug] > Exec(early(initialize), None, None)
+[debug] > Exec(initialize, None, None)
+[debug] > Exec(boot, None, None)
+[debug] > Exec(writeSbtVersion, None, None)
+[debug] > Exec(reload, None, None)
+[debug] > Exec(sbtStashOnFailure, None, None)
+[debug] > Exec(onFailure loadFailed, None, None)
+[debug] > Exec(loadp, None, None)
+[info] welcome to sbt 1.9.8 (GraalVM Community Java 17.0.8)
+[debug] Load.defaultLoad until apply took 55.070861ms
+[debug]           Load.loadUnit: plugins took 46.775887ms
+[debug]           Load.loadUnit: defsScala took 0.143758ms
+[debug] [Loading] Scanning directory /opt/gatling/user-files/project
+[debug]             Load.loadUnit: mkEval took 7.635208ms
+[debug] [Loading] Found non-root projects 
+[debug] [Loading] Done in /opt/gatling/user-files/project, returning: ()
+[debug] deducing auto plugins based on known facts Set(Atom(sbt.plugins.CorePlugin)) and clauses Clauses(Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.IvyPlugin)))
+[debug] Clause(Atom(sbt.ScriptedPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.SbtPlugin),Set(Atom(sbt.ScriptedPlugin)))
+[debug] Clause(Atom(sbt.plugins.SemanticdbPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.JUnitXmlReportPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.MiniDependencyTreePlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.IvyPlugin)))
+[debug] Clause(Atom(sbt.plugins.IvyPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.SemanticdbPlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.JUnitXmlReportPlugin)))
+[debug] Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.Giter8TemplatePlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.MiniDependencyTreePlugin))))
+[debug]   :: deduced result: Matched(sbt.plugins.CorePlugin,sbt.plugins.Giter8TemplatePlugin,sbt.plugins.IvyPlugin,sbt.plugins.JvmPlugin,sbt.plugins.MiniDependencyTreePlugin,sbt.plugins.JUnitXmlReportPlugin,sbt.plugins.SemanticdbPlugin)
+[debug] Plugins.deducer#function took 11.084509 ms
+[info] loading settings for project user-files-build from plugins.sbt ...
+[debug]               Load.resolveProject(user-files-build) took 23.888144ms
+[debug]             Load.loadTransitive: finalizeProject(Project(id user-files-build, base: /opt/gatling/user-files/project, plugins: List(<none>))) took 45.642027ms
+[debug] [Loading] Done in /opt/gatling/user-files/project, returning: (user-files-build)
+[debug]           Load.loadUnit: loadedProjectsRaw took 391.365098ms
+[debug]           Load.loadUnit: cleanEvalClasses took 44.26155ms
+[debug]         Load.loadUnit(file:/opt/gatling/user-files/project/, ...) took 487.126029ms
+[debug]       Load.apply: load took 568.607414ms
+[debug]       Load.apply: resolveProjects took 3.461028ms
+[debug]       Load.apply: finalTransforms took 35.565959ms
+[debug]       Load.apply: config.delegates took 4.666126ms
+[debug]       Load.apply: Def.make(settings)... took 213.224819ms
+[debug]       Load.apply: structureIndex took 85.510032ms
+[debug]       Load.apply: mkStreams took 0.841213ms
+[info] loading project definition from /opt/gatling/user-files/project
+[debug] Running task... Cancel: Signal, check cycles: false, forcegc: true
+[debug]     Load.loadUnit: plugins took 1673.582959ms
+[debug]     Load.loadUnit: defsScala took 0.0051ms
+[debug] [Loading] Scanning directory /opt/gatling/user-files
+[debug]       Load.loadUnit: mkEval took 1.958762ms
+[debug] [Loading] Found non-root projects 
+[debug] [Loading] Done in /opt/gatling/user-files, returning: ()
+[debug] deducing auto plugins based on known facts Set(Atom(io.gatling.sbt.GatlingPlugin), Atom(sbt.plugins.CorePlugin)) and clauses Clauses(Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.IvyPlugin)))
+[debug] Clause(Atom(sbt.ScriptedPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.SbtPlugin),Set(Atom(sbt.ScriptedPlugin)))
+[debug] Clause(Atom(sbt.plugins.SemanticdbPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.JUnitXmlReportPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.MiniDependencyTreePlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(io.gatling.sbt.GatlingPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.IvyPlugin)))
+[debug] Clause(Atom(sbt.plugins.IvyPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.SemanticdbPlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.JUnitXmlReportPlugin)))
+[debug] Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.Giter8TemplatePlugin)))
+[debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.MiniDependencyTreePlugin))))
+[debug]   :: deduced result: Matched(sbt.plugins.CorePlugin,io.gatling.sbt.GatlingPlugin,sbt.plugins.Giter8TemplatePlugin,sbt.plugins.IvyPlugin,sbt.plugins.JvmPlugin,sbt.plugins.MiniDependencyTreePlugin,sbt.plugins.JUnitXmlReportPlugin,sbt.plugins.SemanticdbPlugin)
+[debug] Plugins.deducer#function took 3.841565 ms
+[info] loading settings for project user-files from build.sbt ...
+[debug]         Load.resolveProject(user-files) took 20.748325ms
+[debug]       Load.loadTransitive: finalizeProject(Project(id user-files, base: /opt/gatling/user-files, plugins: List(<none>))) took 25.685235ms
+[debug] [Loading] Done in /opt/gatling/user-files, returning: (user-files)
+[debug]     Load.loadUnit: loadedProjectsRaw took 195.224104ms
+[debug]     Load.loadUnit: cleanEvalClasses took 147.041716ms
+[debug]   Load.loadUnit(file:/opt/gatling/user-files/, ...) took 2017.651597ms
+[debug] Load.apply: load took 2029.880086ms
+[debug] Load.apply: resolveProjects took 0.162838ms
+[debug] Load.apply: finalTransforms took 10.144637ms
+[debug] Load.apply: config.delegates took 1.02171ms
+[debug] Load.apply: Def.make(settings)... took 63.64511ms
+[debug] Load.apply: structureIndex took 25.507034ms
+[debug] Load.apply: mkStreams took 0.00313ms
+[info] set current project to user-files (in build file:/opt/gatling/user-files/)
+[debug] > Exec(sbtPopOnFailure, None, None)
+[debug] > Exec(resumeFromFailure, None, None)
+[debug] > Exec(notifyUsersAboutShell, None, None)
+[debug] > Exec(iflast shell, None, None)
+[debug] > Exec(Gatling/test, None, None)
+[debug] Evaluating tasks: Gatling / test
+[debug] Running task... Cancel: Signal, check cycles: false, forcegc: true
+[info] compiling 1 Scala source to /opt/gatling/user-files/target/scala-2.13/test-classes ...
+[info] done compiling
